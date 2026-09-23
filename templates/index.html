@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Your files, synced between your own devices.</h1>
+  <p class="lead">{{ config.description }}</p>
+  <p class="actions">
+    <a class="button" href="{{ get_url(path='/docs/latest/guide/install.html') }}">Get started</a>
+    <a class="button secondary" href="{{ config.extra.repository }}">View the source</a>
+  </p>
+</section>
+<article class="prose">
+  {{ section.content | safe }}
+</article>
+{% endblock content %}
