@@ -1,0 +1,16 @@
+base_url = "https://tidefell.org"
+title = "Tidefell"
+description = "Open-source peer-to-peer file sync with no central server."
+default_language = "en"
+compile_sass = false
+build_search_index = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+[markdown.highlighting]
+style = "class"
+light_theme = "github-light"
+dark_theme = "github-dark"
+
+[extra]
+repository = "https://github.com/tidefell/tidefell"

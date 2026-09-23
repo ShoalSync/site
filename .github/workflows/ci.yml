@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The monorepo is private. The org's GitHub App mints a token, valid for an hour, that can
+      # only read tidefell/tidefell; it downloads the pinned release's docs.
+      - name: Token for the monorepo
+        id: token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.CROSS_REPO_CI_APP }}
+          private-key: ${{ secrets.CROSS_REPO_CI_KEY }}
+          owner: Tidefell
+          repositories: tidefell
+          permission-contents: read
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - name: Fetch the pinned release's docs
+        env:
+          GH_TOKEN: ${{ steps.token.outputs.token }}
+        run: nix develop --command scripts/fetch-docs.sh
+      - name: Build
+        run: nix develop --command zola build
+      - name: Check internal links
+        run: nix develop --command zola check --skip-external-links
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: public
