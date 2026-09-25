@@ -23,6 +23,13 @@ Deleted files go to a recycle bin and are kept for as long as you choose, set pe
 phone can keep them for a week while the NAS keeps them forever. Restore them from the command
 line or from a browser.
 
+## Know where your files are safe
+
+Every device knows which full replicas, such as a NAS or an always-on peer, have confirmed
+holding the files it made, and marks the ones that exist only on it. A phone keeps a file it made
+until a full replica has it, and the Android app can offer to remove backed-up photos from the
+phone once one does, always through Android's own confirmation.
+
 ## The web interface is just another peer
 
 Turn on the web peer on any always-on device to sign in from a browser, browse, upload and
