@@ -37,5 +37,6 @@ jobs:
         run: nix develop --command zola check --skip-external-links
       - uses: actions/upload-artifact@v4
         with:
+          retention-days: 7
           name: site
           path: public
