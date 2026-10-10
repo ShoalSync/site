@@ -33,6 +33,8 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.token.outputs.token }}
         run: nix develop --command scripts/fetch-docs.sh
+      - name: Shell, Nix and spelling checks
+        run: nix flake check
       - name: Build
         run: nix develop --command zola build
       - name: Check internal links
