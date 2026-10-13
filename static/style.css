@@ -1,36 +1,17 @@
-:root {
-  --bg: #fbfcfd;
-  --fg: #1c2530;
-  --muted: #5b6776;
-  --accent: #0d6e8a;
-  --accent-fg: #ffffff;
-  --border: #dde3ea;
-  --code-bg: #eef2f6;
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #11171d;
-    --fg: #e3e9ef;
-    --muted: #9aa7b5;
-    --accent: #4fb3cf;
-    --accent-fg: #0b1116;
-    --border: #2a343f;
-    --code-bg: #1b242d;
-  }
-}
+/* Colours are Tidefell's design tokens, in tokens.css: a copy of design/dist/css/tokens.css in
+   tidefell/android, which says how to change them. */
+:root { color-scheme: light dark; }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--tf-color-bg);
+  color: var(--tf-color-fg);
   font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-a { color: var(--accent); }
+a { color: var(--tf-color-accent); }
 
 header.site, main, footer.site {
   max-width: 46rem;
@@ -44,40 +25,40 @@ header.site nav {
   gap: 1.25rem;
   align-items: baseline;
   padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--tf-color-border);
 }
 
-header.site a { text-decoration: none; color: var(--fg); }
-header.site a:hover { color: var(--accent); }
+header.site a { text-decoration: none; color: var(--tf-color-fg); }
+header.site a:hover { color: var(--tf-color-accent); }
 header.site .brand { font-weight: 700; font-size: 1.15rem; margin-right: auto; }
 
 main { padding-top: 2rem; padding-bottom: 3rem; }
 
 .hero h1 { font-size: 2.2rem; line-height: 1.2; margin: 1rem 0 0.5rem; }
-.lead { font-size: 1.2rem; color: var(--muted); }
+.lead { font-size: 1.2rem; color: var(--tf-color-fg-muted); }
 .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0 2.5rem; }
 
 .button {
   display: inline-block;
   padding: 0.6rem 1.1rem;
   border-radius: 6px;
-  background: var(--accent);
-  color: var(--accent-fg);
+  background: var(--tf-color-accent);
+  color: var(--tf-color-on-accent);
   text-decoration: none;
   font-weight: 600;
 }
-.button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.button.secondary { background: transparent; color: var(--tf-color-accent); border: 1px solid var(--tf-color-accent); }
 
 .prose h2 { margin-top: 2rem; font-size: 1.3rem; }
-.meta, time { color: var(--muted); font-size: 0.9rem; }
+.meta, time { color: var(--tf-color-fg-muted); font-size: 0.9rem; }
 
-code { background: var(--code-bg); padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
-pre { background: var(--code-bg); padding: 0.8rem 1rem; border-radius: 6px; overflow-x: auto; }
+code { background: var(--tf-color-surface); padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
+pre { background: var(--tf-color-surface); padding: 0.8rem 1rem; border-radius: 6px; overflow-x: auto; }
 pre code { background: none; padding: 0; }
 
 ul.posts { list-style: none; padding: 0; }
 ul.posts li { margin-bottom: 1.5rem; }
 ul.posts a { font-size: 1.15rem; font-weight: 600; margin-right: 0.5rem; }
-ul.posts p { margin: 0.25rem 0 0; color: var(--muted); }
+ul.posts p { margin: 0.25rem 0 0; color: var(--tf-color-fg-muted); }
 
-footer.site { border-top: 1px solid var(--border); padding-top: 1rem; padding-bottom: 2rem; color: var(--muted); font-size: 0.9rem; }
+footer.site { border-top: 1px solid var(--tf-color-border); padding-top: 1rem; padding-bottom: 2rem; color: var(--tf-color-fg-muted); font-size: 0.9rem; }
