@@ -1,7 +1,7 @@
 # Zola output
 public/
 
-# Docs fetched from the pinned monorepo release by scripts/fetch-docs.sh
+# The pinned monorepo release's book, put there by scripts/docs.sh
 static/docs/
 
 # Nix build output

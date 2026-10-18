@@ -18,7 +18,25 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "tidefell": "tidefell"
+      }
+    },
+    "tidefell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792258575,
+        "narHash": "sha256-7hKAtrOohrMoYKDqi5kgnVPR2nDAdFO+R49Emq27hQY=",
+        "ref": "refs/tags/v0.21.0",
+        "rev": "fc699bd4010b9380d54a036dfc34d07b1d4df1ef",
+        "revCount": 246,
+        "type": "git",
+        "url": "ssh://git@github.com/ShoalSync/shoal"
+      },
+      "original": {
+        "ref": "refs/tags/v0.21.0",
+        "type": "git",
+        "url": "ssh://git@github.com/ShoalSync/shoal"
       }
     }
   },

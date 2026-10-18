@@ -1,34 +1,35 @@
 # Tidefell website
 
-Source for the [Tidefell](https://github.com/tidefell/tidefell) website and blog, built with
+Source for the Tidefell website and blog, built with
 [Zola](https://www.getzola.org/). The documentation under `/docs/` is not written here: it is
-the mdBook from the monorepo release pinned in [`TIDEFELL_VERSION`](TIDEFELL_VERSION), served at
-`/docs/<version>/` and `/docs/latest/` (ADR 0013 in the monorepo).
+the mdBook of the monorepo release pinned by the `tidefell` input in [`flake.nix`](flake.nix),
+built from that release's source and served at `/docs/<version>/` and `/docs/latest/` (ADR 0013
+in the monorepo).
 
 ## Building
 
-With Nix, `nix develop` provides `zola` and `gh`.
+The monorepo is private: Nix fetches it over SSH from Forgejo, so building needs a key that can
+read `tidefell/tidefell` (CI uses the `TIDEFELL_READ_KEY` deploy key).
 
 ```sh
-# Download the pinned release's docs (tidefell/tidefell is private, so gh needs access to it).
-scripts/fetch-docs.sh
-# Or use a book built locally from the monorepo:
-#   mdbook build docs && mv docs/book tidefell-docs-X.Y.Z && tar -czf tidefell-docs-X.Y.Z.tar.gz tidefell-docs-X.Y.Z
-#   scripts/fetch-docs.sh path/to/tidefell-docs-X.Y.Z.tar.gz
+nix build             # the whole site, docs included, in result/
+nix flake check       # shell, Nix and spelling checks, and the site's internal links
 
-zola serve        # http://127.0.0.1:1111
-zola build        # writes public/
+# To work on the site, put the pinned docs in static/docs/ and serve it:
+nix develop
+scripts/docs.sh
+zola serve            # http://127.0.0.1:1111
+# Or serve a book built in a monorepo checkout (mdbook build docs):
+#   scripts/docs.sh ../tidefell/docs/book 0.22.0-dev
 ```
 
 ## Deployment
 
-Not set up yet. The plan is GitHub Pages once the repository is public; until then CI uploads
-the built site as the `site` artifact of each run.
+Not set up yet. Until then CI uploads the built site as the `site` artifact of each run.
 
 ## Updating the docs
 
-Bump `TIDEFELL_VERSION` to a monorepo release that has a `tidefell-docs-X.Y.Z.tar.gz` asset
-(0.3.0 onwards). CI fails if the asset is missing.
+Bump the tag in the `tidefell` input's URL and run `nix flake lock`.
 
 ## Layout
 
@@ -36,8 +37,8 @@ Bump `TIDEFELL_VERSION` to a monorepo release that has a `tidefell-docs-X.Y.Z.ta
 | --- | --- |
 | `content/` | Landing page and blog posts (Markdown) |
 | `templates/` | Tera templates |
-| `static/` | Stylesheet; `static/docs/` is fetched, not committed |
-| `scripts/fetch-docs.sh` | Puts the pinned docs into `static/docs/` |
+| `static/` | Stylesheet; `static/docs/` is generated, not committed |
+| `scripts/docs.sh` | Puts the pinned (or a given) book into `static/docs/` |
 
 ## Conventions
 

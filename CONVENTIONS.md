@@ -8,8 +8,8 @@ The website, landing pages and blog, and hosting of the docs site.
 
 ## Consumes
 
-- The built mdBook (`tidefell-docs-X.Y.Z.tar.gz`, which includes the protocol specs) from the
-  monorepo release pinned by `TIDEFELL_VERSION`, fetched by `scripts/fetch-docs.sh`.
+- The mdBook (which includes the protocol specs), built from the monorepo release pinned by the
+  `tidefell` input in `flake.nix`.
 
 ## Change order
 
