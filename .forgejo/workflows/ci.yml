@@ -27,7 +27,17 @@ jobs:
           dir="$RUNNER_TEMP/ssh"
           mkdir -p "$dir"
           chmod 700 "$dir"
-          (umask 077 && printf '%s\n' "$TIDEFELL_READ_KEY" > "$dir/key")
+          # A secret pasted with Windows line endings makes ssh refuse the key ("error in libcrypto").
+          (umask 077 && printf '%s\n' "$TIDEFELL_READ_KEY" | tr -d '\r' > "$dir/key")
+          if ! ssh-keygen -l -f "$dir/key" > /dev/null; then
+            # The key's shape only, never its content: lines, the armour lines, stray characters.
+            echo "lines: $(wc -l < "$dir/key"), bytes: $(wc -c < "$dir/key")"
+            head -1 "$dir/key" | grep -qx -- '-----BEGIN OPENSSH PRIVATE KEY-----' && echo "header: ok" || echo "header: other"
+            tail -1 "$dir/key" | grep -qx -- '-----END OPENSSH PRIVATE KEY-----' && echo "footer: ok" || echo "footer: other"
+            echo "characters outside base64 and armour: $(sed '1d;$d' "$dir/key" | tr -d 'A-Za-z0-9+/=\n' | od -An -c | tr -s ' ' | head -c 80)"
+            echo "::error::TIDEFELL_READ_KEY is not a usable private key"
+            exit 1
+          fi
           printf '%s\n' "$KNOWN_HOSTS" > "$dir/known_hosts"
           echo "GIT_SSH_COMMAND=ssh -i $dir/key -o IdentitiesOnly=yes -o UserKnownHostsFile=$dir/known_hosts -o StrictHostKeyChecking=yes" >> "$GITHUB_ENV"
       - name: Shell, Nix, spelling and link checks
