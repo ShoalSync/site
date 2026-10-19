@@ -6,7 +6,7 @@
   # The monorepo release whose documentation is served under /docs/ (ADR 0013): its source, from
   # which the book is built here. Bump the tag to serve a newer release.
   inputs.tidefell = {
-    url = "git+ssh://git@github.com/ShoalSync/shoal?ref=refs/tags/v0.21.0";
+    url = "git+ssh://git@github.com/ShoalSync/shoal?ref=refs/tags/v0.22.0";
     flake = false;
   };
 
