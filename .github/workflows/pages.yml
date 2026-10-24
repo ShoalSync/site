@@ -1,0 +1,50 @@
+name: Pages
+
+# Each push to main deploys the site to GitHub Pages, at https://shoalsync.github.io/site/ until
+# the site has its own domain: `.#site-pages`, the site built for that address.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deployment at a time; one already running finishes.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build for Pages
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # v31.11.3
+      - name: Build
+        run: |
+          out=$(nix build --no-link --print-out-paths --print-build-logs .#site-pages)
+          # A copy the upload can read and archive, out of the read-only store.
+          cp -rL "$out" "$RUNNER_TEMP/site"
+          chmod -R u+w "$RUNNER_TEMP/site"
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: ${{ runner.temp }}/site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

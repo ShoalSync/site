@@ -6,7 +6,7 @@
   # The monorepo release whose documentation is served under /docs/ (ADR 0013): its source, from
   # which the book is built here. Bump the tag to serve a newer release.
   inputs.shoal = {
-    url = "git+ssh://git@github.com/ShoalSync/shoal?ref=refs/tags/v0.24.0-rc.1";
+    url = "github:ShoalSync/shoal/v0.24.0-rc.1";
     flake = false;
   };
 
@@ -28,31 +28,44 @@
       version = (builtins.fromTOML (builtins.readFile "${shoal}/Cargo.toml")).workspace.package.version;
     in
     {
-      packages = forAllSystems (pkgs: rec {
-        # The pinned release's book. It includes files from elsewhere in the monorepo (specs, the
-        # example configuration), so it is built from the whole source.
-        docs = pkgs.runCommand "shoal-docs-${version}" { nativeBuildInputs = [ pkgs.mdbook ]; } ''
-          cp -R ${shoal} src
-          chmod -R u+w src
-          mdbook build src/docs --dest-dir "$out"
-        '';
-
-        # The site with the book at /docs/<version>/ and /docs/latest/.
-        site = pkgs.stdenvNoCC.mkDerivation {
-          pname = "shoal-site";
-          inherit version;
-          src = self;
-          nativeBuildInputs = [ pkgs.zola ];
-          # zola builds an HTTP client at start, which needs CA certificates even offline.
-          SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-          buildPhase = ''
-            bash scripts/docs.sh ${docs} ${version}
-            zola build --output-dir "$out"
+      packages = forAllSystems (
+        pkgs:
+        let
+          # The pinned release's book. It includes files from elsewhere in the monorepo (specs,
+          # the example configuration), so it is built from the whole source.
+          docs = pkgs.runCommand "shoal-docs-${version}" { nativeBuildInputs = [ pkgs.mdbook ]; } ''
+            cp -R ${shoal} src
+            chmod -R u+w src
+            mdbook build src/docs --dest-dir "$out"
           '';
-          dontInstall = true;
-        };
-        default = site;
-      });
+
+          # The site with the book at /docs/<version>/ and /docs/latest/, for config.toml's
+          # base_url unless given another.
+          mkSite =
+            baseUrl:
+            pkgs.stdenvNoCC.mkDerivation {
+              pname = "shoal-site";
+              inherit version;
+              src = self;
+              nativeBuildInputs = [ pkgs.zola ];
+              # zola builds an HTTP client at start, which needs CA certificates even offline.
+              SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+              buildPhase = ''
+                bash scripts/docs.sh ${docs} ${version}
+                zola build --output-dir "$out" ${pkgs.lib.optionalString (baseUrl != null) "--base-url ${baseUrl}"}
+              '';
+              dontInstall = true;
+            };
+        in
+        rec {
+          inherit docs;
+          site = mkSite null;
+          # As GitHub Pages serves it until the site has its own domain
+          # (.github/workflows/pages.yml).
+          site-pages = mkSite "https://shoalsync.github.io/site";
+          default = site;
+        }
+      );
 
       # Shell, Nix and spelling checks over the source (ADR 0031), and the built site's links.
       checks = forAllSystems (
@@ -80,13 +93,13 @@
                 SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
               }
               ''
-            cp -R ${self} src
-            chmod -R u+w src
-            cd src
-            bash scripts/docs.sh ${self.packages.${pkgs.stdenv.hostPlatform.system}.docs} ${version}
-            zola check --skip-external-links
-            touch $out
-          '';
+                cp -R ${self} src
+                chmod -R u+w src
+                cd src
+                bash scripts/docs.sh ${self.packages.${pkgs.stdenv.hostPlatform.system}.docs} ${version}
+                zola check --skip-external-links
+                touch $out
+              '';
         }
       );
 

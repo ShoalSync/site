@@ -10,8 +10,7 @@ in the monorepo).
 
 ## Building
 
-The monorepo is private: Nix fetches it over SSH from Forgejo, so building needs a key that can
-read `shoal/shoal` (CI uses the `TIDEFELL_READ_KEY` deploy key).
+Nix fetches the pinned monorepo release from GitHub (`ShoalSync/shoal`).
 
 ```sh
 nix build             # the whole site, docs included, in result/
@@ -27,7 +26,9 @@ zola serve            # http://127.0.0.1:1111
 
 ## Deployment
 
-Not set up yet. Until then CI uploads the built site as the `site` artifact of each run.
+Each push to `main` deploys the site to GitHub Pages, at <https://shoalsync.github.io/site/>
+until the site has its own domain (`.github/workflows/pages.yml`, which builds `.#site-pages`).
+CI also uploads the built site as the `site` artifact of each run.
 
 ## Updating the docs
 
