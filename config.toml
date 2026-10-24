@@ -1,5 +1,5 @@
-base_url = "https://tidefell.org"
-title = "Tidefell"
+base_url = "https://shoal.org"
+title = "Shoal"
 description = "Open-source peer-to-peer file sync with no central server."
 default_language = "en"
 compile_sass = false
@@ -13,4 +13,4 @@ light_theme = "github-light"
 dark_theme = "github-dark"
 
 [extra]
-repository = "https://github.com/tidefell/tidefell"
+repository = "https://github.com/ShoalSync/shoal"

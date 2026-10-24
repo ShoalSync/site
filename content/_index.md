@@ -1,9 +1,9 @@
 +++
-title = "Tidefell"
+title = "Shoal"
 template = "index.html"
 +++
 
-Tidefell keeps your files in sync across your devices, like Dropbox, OneDrive or Nextcloud, but
+Shoal keeps your files in sync across your devices, like Dropbox, OneDrive or Nextcloud, but
 with no central server. Every device is a peer, and your files live only on the machines you
 choose.
 
@@ -43,7 +43,7 @@ a small server you run yourself. It is your machine, and the project runs no sto
 
 ## Open source
 
-Tidefell is written in Rust on [iroh](https://github.com/n0-computer/iroh), which connects
-peers directly over QUIC with hole punching and relay fallback. It is licensed under the AGPL,
-with the protocol and client SDK under MIT or Apache-2.0 so anyone can build compatible
+Shoal is written in Rust on [iroh](https://github.com/n0-computer/iroh), which connects
+peers directly over QUIC with hole punching and relay fallback. All of it is licensed under
+MIT or Apache-2.0, at your option, so anyone can use it, build on it and build compatible
 clients.
