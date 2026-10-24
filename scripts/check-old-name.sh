@@ -2,9 +2,7 @@
 # Fails if the old name, Tidefell, is anywhere but where it belongs (ADR 0043): historic ADRs
 # (0001-0042) and their titles in docs/SUMMARY.md, ADRs 0043 and 0044, the release notes of
 # Tidefell's versions in docs/plan.md, the README's "formerly Tidefell" line and licence grant,
-# the site's announcements of Tidefell's releases (content/blog/tidefell-*.md), and names of the
-# current hosting that a later move replaces (Forgejo URLs, the
-# TIDEFELL_READ_KEY secret, the tidefell-release runner user).
+# and the site's announcements of Tidefell's releases (content/blog/tidefell-*.md).
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -12,7 +10,7 @@ hits=$(git grep -n -I -i tidefell -- . \
   ':(exclude)docs/adr/00[0-3][0-9]-*.md' ':(exclude)docs/adr/004[0-4]-*.md' \
   ':(exclude)content/blog/tidefell-*.md' ':(exclude)scripts/check-old-name.sh' || true)
 hits=$(printf '%s\n' "$hits" | grep -v -E \
-  'github\.com[^ ]*/tidefell|TIDEFELL_READ_KEY|tidefell-release|formerly Tidefell|under the name Tidefell|\(adr/00([0-3][0-9]|4[0-2])-' \
+  'formerly Tidefell|under the name Tidefell|\(adr/00([0-3][0-9]|4[0-2])-' \
   || true)
 
 # The release notes of Tidefell's versions: the plan's "- `v0." bullets, as written.

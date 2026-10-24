@@ -1,5 +1,5 @@
 /* Colours are Shoal's design tokens, in tokens.css: a copy of design/dist/css/tokens.css in
-   shoal/android, which says how to change them. */
+   ShoalSync/android, which says how to change them. */
 :root { color-scheme: light dark; }
 
 * { box-sizing: border-box; }
