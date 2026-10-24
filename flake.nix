@@ -1,12 +1,12 @@
 {
-  description = "Tidefell website";
+  description = "Shoal website";
 
   # The same nixpkgs as the pinned monorepo release; zola and mdbook are single binaries from it.
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   # The monorepo release whose documentation is served under /docs/ (ADR 0013): its source, from
   # which the book is built here. Bump the tag to serve a newer release.
-  inputs.tidefell = {
-    url = "git+ssh://git@github.com/ShoalSync/shoal?ref=refs/tags/v0.22.0";
+  inputs.shoal = {
+    url = "git+ssh://git@github.com/ShoalSync/shoal?ref=refs/tags/v0.24.0-rc.1";
     flake = false;
   };
 
@@ -14,7 +14,7 @@
     {
       self,
       nixpkgs,
-      tidefell,
+      shoal,
       ...
     }:
     let
@@ -25,21 +25,21 @@
         "aarch64-darwin"
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
-      version = (builtins.fromTOML (builtins.readFile "${tidefell}/Cargo.toml")).workspace.package.version;
+      version = (builtins.fromTOML (builtins.readFile "${shoal}/Cargo.toml")).workspace.package.version;
     in
     {
       packages = forAllSystems (pkgs: rec {
         # The pinned release's book. It includes files from elsewhere in the monorepo (specs, the
         # example configuration), so it is built from the whole source.
-        docs = pkgs.runCommand "tidefell-docs-${version}" { nativeBuildInputs = [ pkgs.mdbook ]; } ''
-          cp -R ${tidefell} src
+        docs = pkgs.runCommand "shoal-docs-${version}" { nativeBuildInputs = [ pkgs.mdbook ]; } ''
+          cp -R ${shoal} src
           chmod -R u+w src
           mdbook build src/docs --dest-dir "$out"
         '';
 
         # The site with the book at /docs/<version>/ and /docs/latest/.
         site = pkgs.stdenvNoCC.mkDerivation {
-          pname = "tidefell-site";
+          pname = "shoal-site";
           inherit version;
           src = self;
           nativeBuildInputs = [ pkgs.zola ];

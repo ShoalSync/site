@@ -1,15 +1,17 @@
-# Tidefell website
+# Shoal website
 
-Source for the Tidefell website and blog, built with
+Shoal Sync, formerly Tidefell.
+
+Source for the Shoal website and blog, built with
 [Zola](https://www.getzola.org/). The documentation under `/docs/` is not written here: it is
-the mdBook of the monorepo release pinned by the `tidefell` input in [`flake.nix`](flake.nix),
+the mdBook of the monorepo release pinned by the `shoal` input in [`flake.nix`](flake.nix),
 built from that release's source and served at `/docs/<version>/` and `/docs/latest/` (ADR 0013
 in the monorepo).
 
 ## Building
 
 The monorepo is private: Nix fetches it over SSH from Forgejo, so building needs a key that can
-read `tidefell/tidefell` (CI uses the `TIDEFELL_READ_KEY` deploy key).
+read `shoal/shoal` (CI uses the `TIDEFELL_READ_KEY` deploy key).
 
 ```sh
 nix build             # the whole site, docs included, in result/
@@ -20,7 +22,7 @@ nix develop
 scripts/docs.sh
 zola serve            # http://127.0.0.1:1111
 # Or serve a book built in a monorepo checkout (mdbook build docs):
-#   scripts/docs.sh ../tidefell/docs/book 0.22.0-dev
+#   scripts/docs.sh ../shoal/docs/book 0.22.0-dev
 ```
 
 ## Deployment
@@ -29,7 +31,7 @@ Not set up yet. Until then CI uploads the built site as the `site` artifact of e
 
 ## Updating the docs
 
-Bump the tag in the `tidefell` input's URL and run `nix flake lock`.
+Bump the tag in the `shoal` input's URL and run `nix flake lock`.
 
 ## Layout
 
@@ -46,5 +48,19 @@ Read [CONVENTIONS.md](CONVENTIONS.md) before making changes.
 
 ## License
 
-Site content is licensed under [Creative Commons Attribution-ShareAlike 4.0](LICENSE)
-(`CC-BY-SA-4.0`).
+Licensed under either of
+
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
+  <https://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or <https://opensource.org/licenses/MIT>)
+
+at your option.
+
+All earlier versions of this code, including commits made under the name Tidefell, are also
+available under MIT OR Apache-2.0.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in
+the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without
+any additional terms or conditions.

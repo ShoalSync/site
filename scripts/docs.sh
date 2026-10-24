@@ -13,7 +13,7 @@ if [ $# -ge 2 ]; then
   version=$2
 else
   book=$(nix build --no-link --print-out-paths .#docs)
-  version=${book#*-tidefell-docs-}
+  version=${book#*-shoal-docs-}
 fi
 
 if [ ! -f "$book/index.html" ]; then
@@ -29,10 +29,10 @@ chmod -R u+w static/docs
 cat > static/docs/index.html <<HTML
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Tidefell documentation</title>
+<title>Shoal documentation</title>
 <meta http-equiv="refresh" content="0; url=latest/">
 <link rel="canonical" href="latest/">
-<a href="latest/">Tidefell documentation</a>
+<a href="latest/">Shoal documentation</a>
 HTML
 echo "$version" > static/docs/VERSION
 echo "docs for $version in static/docs/"
