@@ -1,7 +1,5 @@
 # Shoal website
 
-Shoal Sync, formerly Tidefell.
-
 Source for the Shoal website and blog, built with
 [Zola](https://www.getzola.org/). The documentation under `/docs/` is not written here: it is
 the mdBook of the monorepo release pinned by the `shoal` input in [`flake.nix`](flake.nix),
@@ -57,8 +55,7 @@ Licensed under either of
 
 at your option.
 
-All earlier versions of this code, including commits made under the name Tidefell, are also
-available under MIT OR Apache-2.0.
+All earlier versions of this code are also available under MIT OR Apache-2.0.
 
 ### Contribution
 
