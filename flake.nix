@@ -6,7 +6,7 @@
   # The monorepo release whose documentation is served under /docs/ (ADR 0013): its source, from
   # which the book is built here. Bump the tag to serve a newer release.
   inputs.shoal = {
-    url = "github:ShoalSync/shoal/v0.24.0-rc.1";
+    url = "github:ShoalSync/shoal/v0.24.0";
     flake = false;
   };
 
